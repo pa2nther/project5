@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<htmL>
+<head>
+<style>
+      #map-canvas {
+        width: 500px;
+        height: 400px;
+      }
+    </style>
+ <script src="https://maps.googleapis.com/maps/api/js"></script>
+<script>
+function initialize() {
+  var myLatlng = [
+     ['San Francisco Zoo',37.7331,-122.5031],
+     ['Lake Merced',37.7094,-122.4958],
+     ['Olympic Club',37.7094,-122.4500],
+     ['Stern Grove',37.7362,-122.4776]
+  ]
+
+  
+  var mapOptions = {
+    zoom: 9,
+    center: new google.maps.LatLng(37.7567,-122.5068)
+  }
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  var i,marker
+
+  for ( i=0;i<myLatlng.length;i++){
+     marker = new google.maps.Marker({
+      position: new google.maps.LatLng(myLatlng[i][1],myLatlng[i][2]),
+      map: map,
+      title: myLatlng[i][0]
+
+  
+    });
+     console.log(myLatlng[i][2]);
+}}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+<body>
+<div id='map-canvas'></div>
+</body>
+</html>

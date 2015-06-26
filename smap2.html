@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      .controls {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+      #listbx{
+        position: absolute;
+        font-family: Roboto;
+        top: 35px;
+        left: 10px;
+        z-index=3;
+      }
+
+       #listbx1{
+        position: absolute;
+        font-family: Roboto;
+        top: 142px;
+        left: 10px;
+        height: 355px;
+        z-index=3;
+
+        #i{
+          position: absolute;
+          font-family: Roboto;
+          left: 250px;
+          top: 200px;
+        }
+      }
+
+    </style>
+    <title>Outer Sunset Neighborhood in San Francisco</title>
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+    
+    <script>
+// This example adds a search box to a map, using the Google Place Autocomplete
+// feature. People can enter geographical searches. The search box will return a
+// pick list containing a mix of places and predicted search terms.
+var sites 
+
+
+function initialize() {
+
+  var markers = [];
+  
+  var map = new google.maps.Map(document.getElementById('map-canvas'), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+
+  var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(37.7567, -122.5068),
+      new google.maps.LatLng(37.4567, -122.2068));
+  map.fitBounds(defaultBounds);
+  sites = document.getElementById('listbx1'); //adds search results listbx
+  // Create the search box and link it to the UI element.
+  var input = /** @type {HTMLInputElement} */(
+      document.getElementById('pac-input'));
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+  var searchBox = new google.maps.places.SearchBox(
+    /** @type {HTMLInputElement} */(input));
+
+  // [START region_getplaces]
+  // Listen for the event fired when the user selects an item from the
+  // pick list. Retrieve the matching places for that item.
+  google.maps.event.addListener(searchBox, 'places_changed', function() {
+    var places = searchBox.getPlaces();
+    
+    
+    if (places.length == 0) {
+      return;
+    }
+    document.getElementById('listbx1').innerHTML="<h2>Results</h2>"; //clear the div for new entries
+    for (var i = 0, marker; marker = markers[i]; i++) {
+      marker.setMap(null);
+    }
+    
+    // For each place, get the icon, place name, and location.
+    markers = [];
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0, place; place = places[i]; i++) {
+      var image = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+
+      // Create a marker for each place.
+      var marker = new google.maps.Marker({
+        map: map,
+        icon: image,
+        title: place.name,
+        position: place.geometry.location
+      });
+      if (place.name != 'San Francisco Zoo' && place.name != 'Lake Merced')
+        sites.innerHTML += '<li>' + place.name + '</li>';
+
+      var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract'];console.log(data['query']['pages']['0']['extract']);});
+      
+      markers.push(marker);
+
+      bounds.extend(place.geometry.location);
+    }
+
+    map.fitBounds(bounds);
+  });
+  // [END region_getplaces]
+
+var myLatlng = [
+    ['San Francisco Zoo',37.7331,-122.5031],
+    ['Lake Merced',37.7094,-122.4958]
+
+   ]
+
+
+var i;
+var marker;
+for (i=0;i<myLatlng.length;i++){
+  marker=new google.maps.Marker({
+  position: new google.maps.LatLng(myLatlng[i][1],myLatlng[i][2]),
+  map: map,
+  title: myLatlng[i][0]
+
+});
+
+//var infoM = $.getJSON("http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?", {page:marker.title, prop:"text"}, function(data) {document.getElementById('i').innerHTML="<h3>"+data.parse.title+"</h3>"+data.parse.text[0];console.log(data.parse.text[1]);});
+var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract'];console.log(data['query']['pages']['0']['extract']);});
+//var info2 = $.ajax("https://www.en.wikipedia.org/w/api.php?action=query&titles="+marker.title+"Page&prop=extracts&exinfor&rvprop=content&format=jsonfm",function(data){console.log(data)});
+
+
+ var infoS="<a href='http://www.en.wikipedia.org/wiki/"+marker.title+"'>" ;;
+
+ 
+  var infowindow = new google.maps.InfoWindow({
+      content: infoS+"Click for more info on Wikipedia</a>"
+
+                  
+
+  });
+
+//Adds infowindow when the marker is clicked
+google.maps.event.addListener(marker, 'click', function() { 
+ 
+ infowindow.open(map,marker);
+   
+   // var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {foreach (data['query']['pages'] as pages )document.getElementById('i').innerHTML=data['query']['pages']['0']['extract'];console.log(data['query']['pages']['0']['extract']);})
+  });
+
+  // Bias the SearchBox results towards places that are within the bounds of the
+  // current map's viewport.
+  google.maps.event.addListener(map, 'bounds_changed', function() {
+    var bounds = map.getBounds();
+    searchBox.setBounds(bounds);
+  });
+}
+ 
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+    </script>
+    <style>
+      #target {
+        width: 345px;
+      }
+    </style>
+  </head>
+  <body>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    
+    <div id="map-canvas"></div>
+    <div id="listbx">
+      <h2>Sites</h2>
+     
+       <li>San Francisco Zoo</li>
+       <li>Lake Merced</li>
+      
+    </div>
+    <div id="listbx1">
+    <h2>Results</h2>
+    <ul>
+    </ul>
+    </div>
+    <div id="i">
+    <p>from Wikipedia</p>
+    </div>
+  </body>
+</html>
