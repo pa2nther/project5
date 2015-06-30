@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <style>
       html, body, #map-canvas {
-        height: 100vh;
-        width: 95vw;
+        height: 100%;
         margin: 0px;
         padding: 0px
       }
@@ -58,7 +57,6 @@
         top: 35px;
         left: 10px;
         z-index=3;
-        font-size: 9px;
       }
 
        #listbx1{
@@ -68,14 +66,12 @@
         left: 10px;
         height: 355px;
         z-index=3;
-        font-size: 9px;
 
         #i{
           position: absolute;
           font-family: Roboto;
-          left: 300px;
-          top: 250px;
-          font-size: 9px;
+          left: 250px;
+          top: 200px;
         }
       }
 
@@ -83,7 +79,7 @@
     <title>Outer Sunset Neighborhood in San Francisco</title>
     <script src="jquery-1.11.3.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
-    <script type="text/javascript" src="collapsible.js"></script>
+    
     <script>
 // This example adds a search box to a map, using the Google Place Autocomplete
 // feature. People can enter geographical searches. The search box will return a
@@ -149,21 +145,9 @@ function initialize() {
       if (place.name != 'San Francisco Zoo' && place.name != 'Lake Merced')
         sites.innerHTML += '<li>' + place.name + '</li>';
 
-      var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract']; else document.getElementById('i').innerHTML+="No results <br>";console.log(data['query']['pages']['0']['extract']);});
+      var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract'];else document.getElementById('i').innerHTML+='No Wikipedia entry';console.log(data['query']['pages']['0']['extract']);});
       
       markers.push(marker);
-
-      var infowindow = new google.maps.InfoWindow({
-    //  content: infoS+"Click for more info on Wikipedia</a>"
-
-             
-
-  });
-       
-      google.maps.event.addListener(marker, 'click', function() { 
-      infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info on "+this.title+"</a>");
-       infowindow.open(map,this);
-      });
 
       bounds.extend(place.geometry.location);
     }
@@ -194,11 +178,11 @@ var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extr
 //var info2 = $.ajax("https://www.en.wikipedia.org/w/api.php?action=query&titles="+marker.title+"Page&prop=extracts&exinfor&rvprop=content&format=jsonfm",function(data){console.log(data)});
 
 
- var infoS="<a href='http://www.en.wikipedia.org/wiki/"+marker.title+"'>" ;
+ var infoS=marker.title+"<a href='http://www.en.wikipedia.org/wiki/"+marker.title+"'>" ;;
 
- //Setting the content within the listner instead
+ 
   var infowindow = new google.maps.InfoWindow({
-    //  content: infoS+"Click for more info on Wikipedia</a>"
+      content: infoS+"Click for more info from Wikipedia </a>"
 
                   
 
@@ -206,8 +190,8 @@ var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extr
 
 //Adds infowindow when the marker is clicked
 google.maps.event.addListener(marker, 'click', function() { 
- infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info on "+this.title+"</a>");
- infowindow.open(map,this);
+ 
+ infowindow.open(map,marker);
    
    // var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {foreach (data['query']['pages'] as pages )document.getElementById('i').innerHTML=data['query']['pages']['0']['extract'];console.log(data['query']['pages']['0']['extract']);})
   });
@@ -222,9 +206,6 @@ google.maps.event.addListener(marker, 'click', function() {
  
 }
 google.maps.event.addDomListener(window, 'load', initialize);
-
-$('#listbx').collapsible('default-open');
-$('#listbx1').collapsible('default-open');
 
 
     </script>
