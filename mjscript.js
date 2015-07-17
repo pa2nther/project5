@@ -88,12 +88,31 @@ function initialize() {
   });
   // [END region_getplaces]
 //Use knockout to list Sites
-ko.applyBindings ({
-  points: [
-   { title: 'San Francisco Zoo',longitude: 37.7331,lattitude: -122.5031},
+var points= [
+    {title: 'San Francisco Zoo',longitude: 37.7331,lattitude: -122.5031},
     {title: 'Lake Merced', longitude:37.7094,lattitude:-122.4958}
-    ]
-   });
+    ];
+
+
+
+var viewModel={
+	
+ 	query: ko.observable('')
+ 	};
+
+	viewModel.points= ko.computed(function(){
+	var search=this.query().toLowerCase();
+        return ko.utils.arrayFilter(points,
+  function(points){
+	return
+  points.title.toLowerCase().indexOf(search)>=0;
+	});
+  }, viewModel);
+  
+
+
+ko.applyBindings(viewModel);
+
 //Array for sites markers, map did not read knockout format
 var myLatlng = [
     [ 'San Francisco Zoo', 37.7331, -122.5031],
@@ -114,9 +133,11 @@ for (i=0;i<myLatlng.length;i++){
 });
 
 //var infoM = $.getJSON("http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?", {page:marker.title, prop:"text"}, function(data) {document.getElementById('i').innerHTML="<h3>"+data.parse.title+"</h3>"+data.parse.text[0];console.log(data.parse.text[1]);});
-var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract'];console.log(data['query']['pages']['0']['extract']);});
+var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract'];console.log(data['query']['pages']['0']['extract']);})
 //var info2 = $.ajax("https://www.en.wikipedia.org/w/api.php?action=query&titles="+marker.title+"Page&prop=extracts&exinfor&rvprop=content&format=jsonfm",function(data){console.log(data)});
-
+.fail(function(){
+  alert('No connection');
+});
 
  var infoS="<a href='http://www.en.wikipedia.org/wiki/"+marker.title+"'>" ;
 
@@ -145,5 +166,7 @@ google.maps.event.addListener(marker, 'click', function() {
 }
  $('#listbx').collapsible('default-open');
 // ko.applyBindings(myLatlngK);
+
 }
 google.maps.event.addDomListener(window, 'load', initialize);
+
