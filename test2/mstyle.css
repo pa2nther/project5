@@ -1,10 +1,8 @@
- html, 
- body, 
- #map-canvas {
+ html, body, #map-canvas {
         height: 100vh;
         width: 100vw;
-        margin: 0;
-        padding: 0;
+        margin: 0px;
+        padding: 0px
         left: 10px;
       }
       .controls {
@@ -62,7 +60,7 @@
         font-size: 9px;
       }
 
-      #listbx1{
+       #listbx1{
         position: absolute;
         font-family: Roboto;
         left: 10px;
@@ -70,16 +68,15 @@
         z-index=3;
         font-size: 9px;
         overflow-y: auto;
-     }
+          }
 
-      #i{
-        position: absolute;
-        font-family: Roboto;
-        height: 90px;
-        top: 550px;
-        font-size: 9px;
-        background-color: white;
-        overflow: auto;
-        display: none;
-      }
+        #i{
+          position: absolute;
+          font-family: Roboto;
+          height: 90px;
+          top: 550px;
+          font-size: 9px;
+          background-color: white;
+          overflow: auto;
+        }
       

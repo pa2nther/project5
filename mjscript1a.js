@@ -1,7 +1,7 @@
 // This example adds a search box to a map, using the Google Place Autocomplete
 // feature. People can enter geographical searches. The search box will return a
 // pick list containing a mix of places and predicted search terms.
-var sites;
+var sites; 
 
 
 function initialize() {
@@ -60,25 +60,24 @@ function initialize() {
         title: place.name,
         position: place.geometry.location
       });
-      //not using listbox for list at this time
+
       //add info to listbox
       if (place.name != 'San Francisco Zoo' && place.name != 'Lake Merced')
-         sites.innerHTML += "<li>"+place.name+"</li>";
+         sites.innerHTML += '<ul><li><a href=http://www.en.wikipedia.org/wiki/' + place.name + '">'+place.name+"</a></li>";
 
-      var infoM2a = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract']; else document.getElementById('i').innerHTML+="No results <br>";console.log(data['query']['pages']['0']['extract']);});
+      var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract']; else document.getElementById('i').innerHTML+="No results <br>";console.log(data['query']['pages']['0']['extract']);});
       
       markers.push(marker);
 
       var infowindow = new google.maps.InfoWindow({
     //  content: infoS+"Click for more info on Wikipedia</a>"
-          
+
+             
 
   });
        
       google.maps.event.addListener(marker, 'click', function() { 
-      var infoM2a = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+this.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])infowindow.setContent(data['query']['pages']['0']['extract']+"<p>from Wikipedia</p>"); else infowindow.setContent("No results for the location from Wikipedia");});
-
-      //infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info on "+this.title+"</a>");
+      infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info on "+this.title+"</a>");
        infowindow.open(map,this);
       });
 
@@ -91,54 +90,62 @@ function initialize() {
 
 
 
+//Use knockout to list Sites
 
-   
+ var points=[
+   { title: 'San Francisco Zoo',longitude: 37.7331,lattitude: -122.5031},
+    {title: 'Lake Merced', longitude:37.7094,lattitude:-122.4958}
+    ];
+
+var viewmodel={
+  query: ko.observable('')
+};
+
+viewmodel.points=ko.computed(function(){ 
+  var search = this.query.toLowerCase();
+   return ko.utils.arrayFilter(points, function(point){
+    return point.title.toLowerCase().indexOf(search)>=0;
+   }); },
+ viewmodel);
 
 //Array for sites markers, map did not read knockout format
 var myLatlng = [
     [ 'San Francisco Zoo', 37.7331, -122.5031],
     [ 'Lake Merced', 37.7094,-122.4958]
 
-   ];
+   ]
 
-
-
+ko.applyBindings(viewmodel);
 var i;
 var marker;
-var sMarker = []; //Array to hold markers for later use
 for (i=0;i<myLatlng.length;i++){
   marker=new google.maps.Marker({
   position: new google.maps.LatLng(myLatlng[i][1],myLatlng[i][2]),
   map: map,
   title: myLatlng[i][0]
+
 });
-  sMarker.push(marker);
 
-//var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {document.getElementById('i').innerHTML+="<li class="+marker.title+">"+data['query']['pages']['0']['extract']+"</li>";console.log(data['query']['pages']['0']['extract']);})
-//.fail(function(){
-//  alert('No connection');
-//});
-//var ifw=[];
-//var infoM3 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) { ifw.push(data['query']['pages']['0']['extract']);console.log(data['query']['pages']['0']['extract']);})
-//.fail(function(){
-//  alert('No connection');
-//});
-
-//var infoS="<a href='http://www.en.wikipedia.org/wiki/"+marker.title+"'>" ;
-
- //Setting the content within the listner instead
-var infowindow = new google.maps.InfoWindow({
-    //  content: infoS+"Click for more info on Wikipedia</a>"
-  });
-
-
-//Adds infowindow when the marker is clicked
-google.maps.event.addListener(marker, 'click', function() { 
- var infoMc = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+this.title+"&format=json&formatversion=2&callback=?", function(data) {infowindow.setContent("<li class="+this.title+">"+data['query']['pages']['0']['extract']+"</li><p> from Wikipedia</p>");})
+//var infoM = $.getJSON("http://en.wikipedia.org/w/api.php?action=parse&format=json&callback=?", {page:marker.title, prop:"text"}, function(data) {document.getElementById('i').innerHTML="<h3>"+data.parse.title+"</h3>"+data.parse.text[0];console.log(data.parse.text[1]);});
+var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract'];console.log(data['query']['pages']['0']['extract']);})
+//var info2 = $.ajax("https://www.en.wikipedia.org/w/api.php?action=query&titles="+marker.title+"Page&prop=extracts&exinfor&rvprop=content&format=jsonfm",function(data){console.log(data)});
 .fail(function(){
   alert('No connection');
 });
-  //infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info from Wikipedia on "+this.title+"</a>");
+
+ var infoS="<a href='http://www.en.wikipedia.org/wiki/"+marker.title+"'>" ;
+
+ //Setting the content within the listner instead
+  var infowindow = new google.maps.InfoWindow({
+    //  content: infoS+"Click for more info on Wikipedia</a>"
+
+                  
+
+  });
+
+//Adds infowindow when the marker is clicked
+google.maps.event.addListener(marker, 'click', function() { 
+ infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info on "+this.title+"</a>");
  infowindow.open(map,this);
    
    // var infoM2 = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {foreach (data['query']['pages'] as pages )document.getElementById('i').innerHTML=data['query']['pages']['0']['extract'];console.log(data['query']['pages']['0']['extract']);})
@@ -151,46 +158,6 @@ google.maps.event.addListener(marker, 'click', function() {
     searchBox.setBounds(bounds);
   });
 }
-
-//Use knockout to list Sites
-
- var  points = [
-  {title: 'San Francisco Zoo',longitude: "37.7331",lattitude: "-122.5031"},
-  {title: 'Lake Merced', longitude:"37.7094",lattitude:"-122.4958"}
-    ];
-   
-
-
-var viewModel = function(){
-
-  var self = this;
-
-  self.points = ko.observableArray(points);
-  
-  self.query = ko.observable('');
-
-  self.search = ko.computed(function(){
-      
-      for (var i=0;i<points.length;i++){//loop to make the markers appear with the search 
-      console.log(sMarker[i].title);
-      if(sMarker[i].title.indexOf(self.query().toLowerCase())<0)
-       sMarker[i].setMap(null);
-     else
-       sMarker[i].setMap(map);
-    }
-      return ko.utils.arrayFilter(self.points(), function(point){
-
-      return point.title.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
-      //console.log(point.title);
-    });
-    
-      });
-};
-
-
-
-ko.applyBindings(viewModel );
-
  $('#listbx').collapsible('default-open');
  
 }
