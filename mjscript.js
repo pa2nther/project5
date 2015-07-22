@@ -76,7 +76,7 @@ function initialize() {
   });
        
       google.maps.event.addListener(marker, 'click', function() { 
-      var infoM2a = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+this.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])infowindow.setContent(data['query']['pages']['0']['extract']+"<p>from Wikipedia</p>"); else infowindow.setContent("No results for the location from Wikipedia");});
+      var infoM2a = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+this.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])infowindow.setContent(data['query']['pages']['0']['extract']+"<p>from Wikipedia</p>"); else infowindow.setContent("No results for the location from Wikipedia");}).fail(function(data,textStatus){infowindow.setContent("connection error");});
 
       //infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info on "+this.title+"</a>");
        infowindow.open(map,this);
@@ -135,7 +135,7 @@ var infowindow = new google.maps.InfoWindow({
 //Adds infowindow when the marker is clicked
 google.maps.event.addListener(marker, 'click', function() { 
  var infoMc = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+this.title+"&format=json&formatversion=2&callback=?", function(data) {infowindow.setContent("<li class="+this.title+">"+data['query']['pages']['0']['extract']+"</li><p> from Wikipedia</p>");})
-.fail(function(){
+.error(function(){
   alert('No connection');
 });
   //infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info from Wikipedia on "+this.title+"</a>");
