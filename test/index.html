@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Page Title</title>
+  <script src="jquery-1.11.3.min.js"></script>
+  <!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>-->
+  <!--<script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>-->
+ <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/1.2.1/knockout-min.js"></script>-->
+  <script type='text/javascript' src='knockout-3.3.0.js'></script>
+  <script src="https://maps.googleapis.com/maps/api/js"></script>
+  <script src="mjs.js"></script>
+
+  <script>
+  /* 
+  $(function() {
+    //knockout list+search
+    var points = [
+      {name:"Lake Merced",  longit:"37.7208",  latt:"-122.4958"},
+      {name:"San Francisco Zoo",         longit:"37.7331",                       latt:"122.5031"},
+      {name:"Golden Gate Heights Park",   longit:"37.7565",  latt:"122.4718"},
+    ];
+
+    var viewModel = {
+      points: ko.observableArray(points),
+
+      query: ko.observable(''),
+
+      search: function(value) {
+        viewModel.points.removeAll();
+        for(var x in points) {
+          if(points[x].name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+            viewModel.points.push(points[x]);
+          }
+        }
+      }
+    };
+
+    viewModel.query.subscribe(viewModel.search);
+
+    ko.applyBindings(viewModel);
+  });*/
+  </script>
+</head>
+<body>
+  <header>
+    <form action="#">
+      <input placeholder="Search…" type="search" name="q" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
+    </form>
+  </header>
+  <div class="content">
+    <ul data-bind="template: {name:'point', foreach:points}">
+    </ul>
+  </div>
+
+  <script type="text/html" id="point">
+    <li>
+      <strong data-bind="text: title"></strong> –
+      <span data-bind="text: longitude"></span> –
+      <span data-bind="text: lattitude"></span>
+    </li>
+  </script>
+  <div id="map-canvas"></div>
+</body>
+</html>
