@@ -65,7 +65,7 @@ function initialize() {
       if (place.name != 'San Francisco Zoo' && place.name != 'Lake Merced')
          sites.innerHTML += "<li>"+place.name+"</li>";
 
-      var infoM2a = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'] && navigator.online)document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract']; else document.getElementById('i').innerHTML+="No results <br>";console.log(data['query']['pages']['0']['extract']);});
+      var infoM2a = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+marker.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])document.getElementById('i').innerHTML+=data['query']['pages']['0']['extract']; else document.getElementById('i').innerHTML+="No results <br>";console.log(data['query']['pages']['0']['extract']);});
       
       markers.push(marker);
 
@@ -76,7 +76,7 @@ function initialize() {
   });
        
       google.maps.event.addListener(marker, 'click', function() { 
-      var infoM2a = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+this.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])infowindow.setContent(data['query']['pages']['0']['extract']+"<p>from Wikipedia</p>"); else infowindow.setContent("No results for the location from Wikipedia");}).fail(function(data,textStatus,error){console.log("Error"+errorK);infowindow.setContent("connection error");});
+      var infoM2a = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+this.title+"&format=json&formatversion=2&callback=?", function(data) {if(data['query']['pages']['0']['extract'])infowindow.setContent(data['query']['pages']['0']['extract']+"<p>from Wikipedia</p>"); else infowindow.setContent("No results for the location from Wikipedia");}).fail(function(data,textStatus){infowindow.setContent("connection error");});
 
       //infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info on "+this.title+"</a>");
        infowindow.open(map,this);
