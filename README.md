@@ -4,4 +4,4 @@ This project uses the google map api to make a neighborhood of Outer Sunset in S
 
 Stackoverflow.com and the mozilla developer network were consulted as resources.
 
-The index is brought up to acess the map. Mjscript contains the code for the application and Mstyle is the css file. The site is hosted on github
+The index is brought up to acess the map. Mjscript contains the code for the application and Mstyle is the css file. The site is hosted on github at http://pa2nther.github.io/project5
