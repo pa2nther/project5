@@ -4,55 +4,35 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <link rel="stylesheet" href="mstyle.css">
+    <link rel="stylesheet" href="offline-theme-default.css">
+    <link rel="stylesheet" href="offline-language-english.css">
     <title>Outer Sunset Neighborhood in San Francisco</title>
     <script src="jquery-1.11.3.min.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
     
-    <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>
-  
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
-    <script type="text/javascript" src="collapsible.js"></script>
-    <script type='text/javascript' src='knockout-3.3.0.js'></script>
-    <script type='text/javascript' src="mjscript.js"></script>
-    <script src="offline.js"></script>
-    <script>
-    function doesConnectionExist() {
-    var xhr = new XMLHttpRequest();
-    var file = "http://pa2nther.github.io/";
-    var randomNum = Math.round(Math.random() * 10000);
-     
-    xhr.open('HEAD', file + "?rand=" + randomNum, false);
-     
-    try {
-        xhr.send();
-         
-        if (xhr.status >= 200 && xhr.status < 304) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch (e) {
-        return false;
-    }
-}
-</script>
+    <script src="collapsible.js"></script>
+    <script type="text/javascript" src='knockout-3.3.0.js'></script>
+    <script type="text/javascript" src="mjscript.js"></script>
+    <script type="text/javascript" src="offline.js"></script>
+    
+
     <style>
       #target {
         width: 345px;
       }
-  
     </style>
-    <script src="//fast.eager.io/uAWnsMwreH.js"></script>
-    
+   
   </head>
   <body>
     <form action="#">
-    <input id="s-input" class="controls" type="search" data-bind="value: query, valueUpdate: 'keyup'" placeholder="Sites Search" autocomplete="off">
-  </form>
+      <input id="s-input" class="controls" type="search" data-bind="value: query, valueUpdate: 'keyup'" placeholder="Sites Search" autocomplete="off">
+    </form>
     <input id="pac-input" class="controls" type="text" placeholder="Google Search Box">
     
-    <div id="map-canvas"></div>
-    <div id="listbx">
+    <div id="map-canvas" class="map-canvas"></div>
+    <div id="listbx" class="listbx">
       <h2>Sites</h2>
          <div>
            <ul data-bind="foreach: search()">
@@ -60,10 +40,10 @@
            </ul>
          </div>  
        <h2>Results</h2>
-    <div id='listbx1'>
+    <div id='listbx1' class"listbx1">
     </div>
     </div>
-    <div id="i">
+    <div id="i" class="i">
        <p>from Wikipedia</p>
 
     </div>
