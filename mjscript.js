@@ -32,7 +32,7 @@ function initialize() {
     var places = searchBox.getPlaces();
     
     
-    if (places.length == 0) {
+    if (places.length === 0) {
       return;
     }
     document.getElementById('listbx1').innerHTML=" "; //clear the div for new entries
@@ -135,8 +135,9 @@ var infowindow = new google.maps.InfoWindow({
 //Adds infowindow when the marker is clicked
 google.maps.event.addListener(marker, 'click', function() { 
  var infoMc = $.getJSON("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=2&titles="+this.title+"&format=json&formatversion=2&callback=?", function(data) {infowindow.setContent("<li class="+this.title+">"+data['query']['pages']['0']['extract']+"</li><p> from Wikipedia</p>");})
-.error(function(){
-  alert('No connection');
+.fail(function(data,textStatus,error){
+  console.error(textStatus);
+  alert('No connection'+textStatus);
 });
   //infowindow.setContent("<a href='http://www.en.wikipedia.org/wiki/"+this.title+"'>"+"Click for more info from Wikipedia on "+this.title+"</a>");
  infowindow.open(map,this);
@@ -154,10 +155,10 @@ google.maps.event.addListener(marker, 'click', function() {
 
 //Use knockout to list Sites
 
- var  points = [
+ var points = [
   {title: 'San Francisco Zoo',longitude: "37.7331",lattitude: "-122.5031"},
   {title: 'Lake Merced', longitude:"37.7094",lattitude:"-122.4958"}
-    ];
+  ];
    
 
 

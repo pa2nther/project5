@@ -7,7 +7,7 @@
         padding: 0;
         left: 10px;
       }
-      .controls {
+.controls {
         margin-top: 16px;
         border: 1px solid transparent;
         border-radius: 2px 0 0 2px;
@@ -18,66 +18,59 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
       }
 
-      #s-input{
+#s-input{
         width:  400px;
         margin-left: 12px;
       }
 
-      #pac-input {
+#pac-input {
         background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
+        font: Roboto 15px 300;
         padding: 0 11px 0 13px;
         text-overflow: ellipsis;
         width: 400px;
       }
 
-     #pac-input:focus {
+#pac-input:focus {
         border-color: #4d90fe;
       }
 
-      .pac-container {
+.pac-container {
         font-family: Roboto;
       }
 
-      #type-selector {
+#type-selector {
         color: #fff;
         background-color: #4d90fe;
         padding: 5px 11px 0px 11px;
       }
-       #type-selector label {
-        font-family: Roboto;
-        font-size: 13px;
-        font-weight: 300;
+#type-selector label {
+        font: Roboto 13px 300;
+        
       }
 
-      #listbx{
+#listbx{
         position: absolute;
-        font-family: Roboto;
+        font: Roboto 9px;
         top: 90px;
         left: 10px;
-        z-index=3;
-        font-size: 9px;
+        z-index: 3;
       }
 
-      #listbx1{
+#listbx1{
         position: absolute;
-        font-family: Roboto;
+        font: Roboto 9px;
         left: 10px;
         height: 235px;
-        z-index=3;
-        font-size: 9px;
+        z-index: 3;
         overflow-y: auto;
      }
 
-      #i{
+#i{
         position: absolute;
-        font-family: Roboto;
+        font: Roboto 9px;
         height: 90px;
         top: 550px;
-        font-size: 9px;
         background-color: white;
         overflow: auto;
         display: none;
