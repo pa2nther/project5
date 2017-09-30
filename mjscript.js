@@ -172,7 +172,7 @@ var viewModel = function(){
 
   self.search = ko.computed(function(){
       
-      for (var i=0;i<points.length;i++){//loop to make the markers appear with the search 
+      for ( i=0;i<points.length;i++){//loop to make the markers appear with the search 
       console.log(sMarker[i].title);
       if(sMarker[i].title.indexOf(self.query().toLowerCase())<0)
        sMarker[i].setMap(null);
