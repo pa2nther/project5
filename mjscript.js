@@ -5,8 +5,7 @@ var sites;
 
 
 function initialize() {
-  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUEo2vc_Wg5-nLQpORf4fvVt2MWytSC4A&callback=initMap"
-  type="text/javascript"
+  
   var markers = [];
   
   var map = new google.maps.Map(document.getElementById('map-canvas'), {
