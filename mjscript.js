@@ -5,7 +5,8 @@ var sites;
 
 
 function initialize() {
-  
+  <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+
   var markers = [];
   
   var map = new google.maps.Map(document.getElementById('map-canvas'), {
