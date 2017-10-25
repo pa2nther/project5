@@ -5,7 +5,7 @@ var sites;
 
 
 function initialize() {
-  <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+  <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyDUEo2vc_Wg5-nLQpORf4fvVt2MWytSC4A"></script>
 
   var markers = [];
   
